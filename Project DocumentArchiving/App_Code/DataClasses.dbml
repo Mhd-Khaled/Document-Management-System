@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True;User Instance=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DatabaseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Actions" Member="Actions">
+    <Type Name="Action">
+      <Column Name="IdAction" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdActionType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ActionbyUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRequest" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="DateOfAction" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Action_PositionOfCurrentDoc" Member="PositionOfCurrentDocs" ThisKey="IdAction" OtherKey="IdAction" Type="PositionOfCurrentDoc" />
+      <Association Name="ActionType_Action" Member="ActionType" ThisKey="IdActionType" OtherKey="IdActionType" Type="ActionType" IsForeignKey="true" />
+      <Association Name="CurrentRequest_Action" Member="CurrentRequest" ThisKey="IdRequest" OtherKey="IdRequest" Type="CurrentRequest" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ActionTypes" Member="ActionTypes">
+    <Type Name="ActionType">
+      <Column Name="IdActionType" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="ActionType_Action" Member="Actions" ThisKey="IdActionType" OtherKey="IdActionType" Type="Action" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CurrentRequests" Member="CurrentRequests">
+    <Type Name="CurrentRequest">
+      <Column Name="IdRequest" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateOf" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsCompleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompletedUser" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="CurrentRequest_Action" Member="Actions" ThisKey="IdRequest" OtherKey="IdRequest" Type="Action" />
+      <Association Name="CurrentRequest_PositionOfCurrentDoc" Member="PositionOfCurrentDocs" ThisKey="IdRequest" OtherKey="IdRequest" Type="PositionOfCurrentDoc" />
+      <Association Name="CurrentRequest_RequestAttachment" Member="RequestAttachments" ThisKey="IdRequest" OtherKey="IdRequest" Type="RequestAttachment" />
+      <Association Name="Document_CurrentRequest" Member="Document" ThisKey="IdDoc" OtherKey="IdDoc" Type="Document" IsForeignKey="true" />
+      <Association Name="User_CurrentRequest" Member="User" ThisKey="IdUser" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Departments" Member="Departments">
+    <Type Name="Department">
+      <Column Name="IdDept" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(16)" CanBeNull="true" />
+      <Association Name="Department_Document" Member="Documents" ThisKey="IdDept" OtherKey="IdDept" Type="Document" />
+      <Association Name="Department_Greivance" Member="Greivances" ThisKey="IdDept" OtherKey="IdDept" Type="Greivance" />
+      <Association Name="Department_PositionOfCurrentDoc" Member="PositionOfCurrentDocs" ThisKey="IdDept" OtherKey="IdDept" Type="PositionOfCurrentDoc" />
+      <Association Name="Department_User" Member="Users" ThisKey="IdDept" OtherKey="IdDept" Type="User" />
+      <Association Name="Department_WorkflowDocument" Member="WorkflowDocuments" ThisKey="IdDept" OtherKey="IdDept" Type="WorkflowDocument" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DocDetails" Member="DocDetails">
+    <Type Name="DocDetail">
+      <Column Name="IdDocDetail" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NumNounPaper" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="NameOfNounPaper" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="IdDoc" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Document_DocDetail" Member="Document" ThisKey="IdDoc" OtherKey="IdDoc" Type="Document" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Documents" Member="Documents">
+    <Type Name="Document">
+      <Column Name="IdDoc" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DocumentName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IdDept" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Document_CurrentRequest" Member="CurrentRequests" ThisKey="IdDoc" OtherKey="IdDoc" Type="CurrentRequest" />
+      <Association Name="Document_DocDetail" Member="DocDetails" ThisKey="IdDoc" OtherKey="IdDoc" Type="DocDetail" />
+      <Association Name="Document_WorkflowDocument" Member="WorkflowDocuments" ThisKey="IdDoc" OtherKey="IdDoc" Type="WorkflowDocument" />
+      <Association Name="Department_Document" Member="Department" ThisKey="IdDept" OtherKey="IdDept" Type="Department" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Greivances" Member="Greivances">
+    <Type Name="Greivance">
+      <Column Name="IdGreivance" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdUser" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IdDept" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Problem" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="DateOfAction" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Department_Greivance" Member="Department" ThisKey="IdDept" OtherKey="IdDept" Type="Department" IsForeignKey="true" />
+      <Association Name="User_Greivance" Member="User" ThisKey="IdUser" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PositionOfCurrentDocs" Member="PositionOfCurrentDocs">
+    <Type Name="PositionOfCurrentDoc">
+      <Column Name="IdPositionOfCurrentDoc" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdWorkflowDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdRequest" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdDept" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdAction" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Action_PositionOfCurrentDoc" Member="Action" ThisKey="IdAction" OtherKey="IdAction" Type="Action" IsForeignKey="true" />
+      <Association Name="CurrentRequest_PositionOfCurrentDoc" Member="CurrentRequest" ThisKey="IdRequest" OtherKey="IdRequest" Type="CurrentRequest" IsForeignKey="true" />
+      <Association Name="Department_PositionOfCurrentDoc" Member="Department" ThisKey="IdDept" OtherKey="IdDept" Type="Department" IsForeignKey="true" />
+      <Association Name="WorkflowDocument_PositionOfCurrentDoc" Member="WorkflowDocument" ThisKey="IdWorkflowDoc" OtherKey="IdWorkflowDoc" Type="WorkflowDocument" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RequestAttachments" Member="RequestAttachments">
+    <Type Name="RequestAttachment">
+      <Column Name="IdRequestFile" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="FileTyp" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="FileItSelf" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="IdRequest" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CurrentRequest_RequestAttachment" Member="CurrentRequest" ThisKey="IdRequest" OtherKey="IdRequest" Type="CurrentRequest" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TypeUserId" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="TypeLogin" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IdDept" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_CurrentRequest" Member="CurrentRequests" ThisKey="UserId" OtherKey="IdUser" Type="CurrentRequest" />
+      <Association Name="User_Greivance" Member="Greivances" ThisKey="UserId" OtherKey="IdUser" Type="Greivance" />
+      <Association Name="Department_User" Member="Department" ThisKey="IdDept" OtherKey="IdDept" Type="Department" IsForeignKey="true" />
+      <Association Name="UserType_User" Member="UserType" ThisKey="TypeUserId" OtherKey="TypeUserId" Type="UserType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserTypes" Member="UserTypes">
+    <Type Name="UserType">
+      <Column Name="TypeUserId" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TypeUser" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="UserType_User" Member="Users" ThisKey="TypeUserId" OtherKey="TypeUserId" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WorkflowDocuments" Member="WorkflowDocuments">
+    <Type Name="WorkflowDocument">
+      <Column Name="IdWorkflowDoc" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdStep" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdDept" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="WorkflowDocument_PositionOfCurrentDoc" Member="PositionOfCurrentDocs" ThisKey="IdWorkflowDoc" OtherKey="IdWorkflowDoc" Type="PositionOfCurrentDoc" />
+      <Association Name="Department_WorkflowDocument" Member="Department" ThisKey="IdDept" OtherKey="IdDept" Type="Department" IsForeignKey="true" />
+      <Association Name="Document_WorkflowDocument" Member="Document" ThisKey="IdDoc" OtherKey="IdDoc" Type="Document" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

@@ -1,0 +1,78 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminstratorMasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="Stylesheet" href="../Styles/MasterStyles.css" />  
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+      
+    <style type="text/css">
+        .MasterStyle
+        {
+            background-color : White
+        }
+    </style>
+    <script type="text/javascript">
+        function SetNull() {
+            Session["IsLogged"] = null;
+        }
+
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <table style="width:100%;">
+        <tr>
+            <td class="MasterStyle" colspan="3">
+                <div id='cssmenu'>
+                <div id="bg-one"></div>
+                <div id="bg-two"></div>
+                <div id="bg-three"></div>
+                <div id="bg-four"></div>
+                    <ul>
+                       <li class='active'><a href="../AdministratorPages/HomeAdministrator.aspx"><span>Home</span></a></li>
+                       <li><a><span>User</span></a><div>
+                           <a href="../AdministratorPages/AddUserTypes.aspx">Add type of User</a>
+                           <a href="../AdministratorPages/AddUser.aspx">Add User</a>
+                           <a href="../AdministratorPages/DeleteUser.aspx">Delete User</a>
+                           <a href="../AdministratorPages/EnableDisable.aspx">Enable/Disable</a></div>
+                       </li>
+                        <li><a><span>Department</span></a><div>
+                       <a href="../AdministratorPages/AddDepartment.aspx">Add department</a>
+                       <a href="../AdministratorPages/DeleteDepartment.aspx">Delete department</a></div>
+                       </li>
+                       <li><a><span>Document</span></a><div>
+                       <a href="../AdministratorPages/AddDocumentAdmin.aspx">Add document</a>
+                       <a href="../AdministratorPages/DeleteDocumentAdmin.aspx">Delete document</a>
+                       <a href="../AdministratorPages/AddEditWorkflowAdmin.aspx">Add/Edit workflow</a></div>
+                       </li>
+                       <li id="SignOut">
+                           <a href="../VisitorPages/HomeVisitor.aspx" style="position:fixed ; left:90%; margin-top:7px;"
+                            onclick="SetNull()">
+                               <span>SignOut</span></a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                &nbsp;</td>
+        </tr>
+    </table>
+    </form>
+</body>
+</html>
